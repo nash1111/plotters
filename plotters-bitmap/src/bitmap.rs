@@ -196,6 +196,7 @@ impl<'a, P: PixelFormat> DrawingBackend for BitMapBackend<'a, P> {
         let bitmap_data = self.buffer.borrow_buffer();
 
         // write bitmap data to file
+        println!("Bitmap Data Bytes: {:?}", &bitmap_data[..14]);
         std::fs::write("output.bmp", bitmap_data)
             .map_err(|e| DrawingErrorKind::DrawingError(BitMapBackendError::IOError(e)))?;
 
