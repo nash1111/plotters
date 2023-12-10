@@ -192,6 +192,13 @@ impl<'a, P: PixelFormat> DrawingBackend for BitMapBackend<'a, P> {
 
     #[cfg(all(not(target_arch = "wasm32"), feature = "image"))]
     fn present(&mut self) -> Result<(), DrawingErrorKind<BitMapBackendError>> {
+        // get bitmap data
+        let bitmap_data = self.buffer.borrow_buffer();
+
+        // write bitmap data to file
+        std::fs::write("output.bmp", bitmap_data)
+            .map_err(|e| DrawingErrorKind::DrawingError(BitMapBackendError::IOError(e)))?;
+
         if !P::can_be_saved() {
             return Ok(());
         }
